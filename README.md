@@ -15,3 +15,8 @@ First, clone the repository to your local machine.
 
 ```bash
 git clone https://github.com/your-username/ticket-system.git
+```
+
+#### After cloning you need to run " npm install " for both client and server code
+
+### Make sure you created a database named "ticket-system"
