@@ -1,9 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
 import { useRegisterMutation } from "../redux/features/auth.api";
-import { useDispatch } from "react-redux";
-import { setUser } from "../redux/features/auth.slice";
-import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 
 const RegistrationView = () => {
@@ -14,7 +11,6 @@ const RegistrationView = () => {
   });
 
   const [register, { isLoading }] = useRegisterMutation();
-  const dispatch = useDispatch();
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -41,19 +37,19 @@ const RegistrationView = () => {
         return toast.error(data.message);
       }
 
-      const authData = {
-        user: data.data,
-        token: data.accessToken,
-      };
-      dispatch(setUser(authData));
-      Cookies.set("refreshToken", data.refreshToken);
-      Cookies.set("accessToken", data.accessToken);
+      // const authData = {
+      //   user: data.data,
+      //   token: data.accessToken,
+      // };
+      // dispatch(setUser(authData));
+      // Cookies.set("refreshToken", data.refreshToken);
+      // Cookies.set("accessToken", data.accessToken);
 
       toast.success("Successfully registered", {
         description: "Welcome aboard!",
       });
 
-      navigate("/");
+      navigate("/login");
 
     } catch (error) {
       console.error(error);
