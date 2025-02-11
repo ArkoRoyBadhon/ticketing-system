@@ -1,0 +1,57 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  ADMIN
+  CUSTOMER
+}
+
+model User {
+  id              String   @id @default(uuid())
+  email           String   @unique
+  password        String
+  name            String
+  role            UserRole @default(CUSTOMER)
+  ticketsCreated  Ticket[] @relation("CustomerTickets")
+  ticketsAssigned Ticket[] @relation("ExecutiveTickets")
+  replies         Reply[]
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+}
+
+enum TicketStatus {
+  OPEN
+  RESOLVED
+  CLOSED
+}
+
+model Ticket {
+  id          String       @id @default(uuid())
+  subject     String
+  description String
+  customer    User         @relation("CustomerTickets", fields: [customerId], references: [id])
+  customerId  String
+  executive   User?        @relation("ExecutiveTickets", fields: [executiveId], references: [id])
+  executiveId String?
+  status      TicketStatus @default(OPEN)
+  replies     Reply[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+}
+
+model Reply {
+  id        String   @id @default(uuid())
+  ticket    Ticket   @relation(fields: [ticketId], references: [id])
+  ticketId  String
+  message   String
+  user      User     @relation(fields: [userId], references: [id])
+  userId    String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

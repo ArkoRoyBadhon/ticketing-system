@@ -1,0 +1,10 @@
+@import "tailwindcss";
+
+@layer base {
+    body {
+        @apply bg-gray-100;
+    }
+    .containerMain {
+        @apply max-w-[1200px] mx-auto
+    }
+}
